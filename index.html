@@ -10,8 +10,8 @@
   </head>
   <body>
     <div id = 'app'>
-      <div class = 'playBox'>
-     <img src = 'images/test.jpeg'  @mousedown = "dragImage('down',$event)" @mouseup="dragImage('up',$event)" >
+      <div class = 'playBox' @drop = 'drop($event)' @dragover = 'allowDrop($event)'>
+     <img src = 'images/test2.webp' id = 'car' @dragstart="drag($event)" >
    </div>
    </div>
   </body>
