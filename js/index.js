@@ -7,7 +7,7 @@ function ImageManager(splitsX,splitsY) {
       for(let j = 1; j<=splitsY; j++ ) {
           let imagePiece = {}
           imagePiece['id'] = 'img';
-          imagePiece['src'] = 'images/' +'part' + i + j;
+          imagePiece['src'] = 'images/' +'part' + i + j+'.png';
           imagePiece['key'] = key
           imagePieces.push(imagePiece);
           key++;
@@ -38,18 +38,7 @@ data = {
     imageList: shuffleArray(ImageManager(3,3)),
 }
 
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-function drag(ev) {
-  ev.dataTransfer.setData('imgId', ev.target.id);
-}
-function drop(ev) {
-  ev.preventDefault();
-  var data = byId(ev.dataTransfer.getData('imgId'))
-  data.style.marginTop = ev.offsetY + 'px';
-  data.style.marginLeft = ev.offsetX + 'px';
-}
+
 
 
 methods = {
@@ -69,7 +58,9 @@ methods = {
 
 
 Vue.component('piece',{
-     methods: methods,
+     methods:{drag(ev) {
+       ev.dataTransfer.setData('imgId', ev.target.id);
+     },},
      props:['pieceInfo'],
      template: `
       <img v-bind:src = pieceInfo.src v-bind:id = pieceInfo.id @dragstart="drag($event)">
@@ -77,4 +68,4 @@ Vue.component('piece',{
 })
 
 //var app = new Vue({el:'#app',data, methods})
-var app = new Vue({el:'#app',data})
+var app = new Vue({el:'#app',data,methods})
