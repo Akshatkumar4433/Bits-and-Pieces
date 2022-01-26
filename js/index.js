@@ -72,5 +72,5 @@ Vue.component('piece',{
      `
 })
 
-//var app = new Vue({el:'#app',data, methods})
+
 var app = new Vue({el:'#app',data,methods})
