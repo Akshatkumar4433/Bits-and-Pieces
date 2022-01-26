@@ -11,7 +11,11 @@
   <body>
     <div id = 'app'>
       <div class = 'playBox' @drop = 'drop($event)' @dragover = 'allowDrop($event)'>
-     <img src = 'images/test2.webp' id = 'car' @dragstart="drag($event)" >
+       <piece
+        v-for = 'image in imageList'
+        v-bind:key = 'image.key'
+        v-bind:piece-Info = 'image'
+       ></piece>
    </div>
    </div>
   </body>
