@@ -6,13 +6,16 @@ function ImageManager(splitsX,splitsY) {
     for(let i =1; i<=splitsX; i++) {
       for(let j = 1; j<=splitsY; j++ ) {
           let imagePiece = {}
-          imagePiece['id'] = 'img';
-          imagePiece['src'] = 'images/' +'part' + i + j+'.png';
+          let code = 'part' + i + j;
+          imagePiece['id'] = code;
+          imagePiece['class'] = 'img'
+          imagePiece['src'] = 'images/' + code +'.png';
           imagePiece['key'] = key
           imagePieces.push(imagePiece);
           key++;
       }
     }
+    console.log(imagePieces)
     return imagePieces;
 }
 
@@ -53,6 +56,7 @@ methods = {
      var data = byId(ev.dataTransfer.getData('imgId'))
      data.style.marginTop = ev.offsetY + 'px';
      data.style.marginLeft = ev.offsetX + 'px';
+
    }
 }
 
@@ -63,7 +67,8 @@ Vue.component('piece',{
      },},
      props:['pieceInfo'],
      template: `
-      <img v-bind:src = pieceInfo.src v-bind:id = pieceInfo.id @dragstart="drag($event)">
+      <img v-bind:src = pieceInfo.src v-bind:id = pieceInfo.id
+      v-bind:class = pieceInfo.class  @dragstart="drag($event)">
      `
 })
 
