@@ -6,6 +6,7 @@ function ImageManager(splitsX,splitsY) {
     for(let j = 1; j<=splitsY; j++ ) {
         let imagePiece = {}
         let code = 'part' + i + j;
+        imagePiece['drag'] = this.drag;
         imagePiece['id'] = code;
         imagePiece['class'] = 'img'
         imagePiece['outerClass'] = 'img-box'
@@ -25,6 +26,8 @@ function BoxManager(splitsX,splitsY) {
     for(let j = 1; j<=splitsY; j++ ) {
         let box = {}
         let code = 'box' + i + j;
+        box['allowDrop'] = this.allowDrop;
+        box['drop'] = this.drop;
         box['id'] = code;
         box['class'] = 'box'
         box['key'] = key
@@ -35,6 +38,8 @@ function BoxManager(splitsX,splitsY) {
     return boxes;
 
 }
+
+
 
 function shuffleArray(array) {
      let shuffledArray = [];
@@ -51,6 +56,22 @@ function setup(splitsX,splitsY) {
     this.imageList = shuffleArray(ImageManager(splitsX,splitsY))
     this.boxes = BoxManager(splitsX,splitsY);
 
+
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData('imgId', ev.target.id);
+}
+
+function allowDrop(ev){
+  ev.preventDefault();
+}
+
+
+function drop(ev,id) {
+  ev.preventDefault();
+  var data = byId(ev.dataTransfer.getData('imgId'))
+  byId(id).appendChild(data)
 }
 
 function byId(id) {
@@ -63,58 +84,34 @@ data = {
     a: 0,
     imageList: [],
     boxes:[],
-    useMe:{id:'use-me',class:'use-me'}
+    useMeBoxes:[],
 }
 
 
 
 
 methods = {
-   allowDrop(ev){
-     ev.preventDefault();
-   },
-   drag(ev) {
-     ev.dataTransfer.setData('imgId', ev.target.id);
-   },
-   drop(ev) {
-     ev.preventDefault();
-     var data = byId(ev.dataTransfer.getData('imgId'))
-     data.style.marginTop = ev.offsetY + 'px';
-     data.style.marginLeft = ev.offsetX + 'px';
-     data.style.marginRight = ev.offsetX + 'px';
-     data.style.marginBottom = ev.offsetY + 'px';
-   },
    setup:setup,
+   drag:drag,
+   allowDrop:allowDrop,
+   drop:drop,
 }
 
 
 Vue.component('piece',{
-     methods:{drag(ev) {
-       ev.dataTransfer.setData('imgId', ev.target.id);
-     },},
-     props:['pieceInfo'],
+   props:['pieceInfo'],
      template: `
       <div v-bind:class = pieceInfo.outerClass>
-      <img v-bind:src = pieceInfo.src v-bind:id = pieceInfo.id
-      v-bind:class = pieceInfo.class  @dragstart="drag($event)">
+      <img  v-bind:src = pieceInfo.src v-bind:id = pieceInfo.id
+      v-bind:class = pieceInfo.class  @dragstart="pieceInfo.drag($event)">
       </div>
      `
 })
 
 Vue.component('box', {
-  methods: {
-    allowDrop(ev){
-      ev.preventDefault();
-    },
-    drop(ev,id) {
-      ev.preventDefault();
-      var data = byId(ev.dataTransfer.getData('imgId'))
-      byId(id).appendChild(data)
-    },
-  },
   props:['boxInfo'],
   template: `
-   <div v-bind:id = boxInfo.id v-bind:class = boxInfo.class @drop = 'drop($event,boxInfo.id)' @dragover = 'allowDrop($event)'></div>
+   <div v-bind:id = boxInfo.id v-bind:class = boxInfo.class @drop = boxInfo.drop($event,boxInfo.id) @dragover = boxInfo.allowDrop($event)></div>
   `
 })
 
