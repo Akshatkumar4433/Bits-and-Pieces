@@ -8,6 +8,7 @@ function ImageManager(splitsX,splitsY) {
         let code = 'part' + i + j;
         imagePiece['id'] = code;
         imagePiece['class'] = 'img'
+        imagePiece['outerClass'] = 'img-box'
         imagePiece['src'] = 'images/' + code +'.png';
         imagePiece['key'] = key
         imagePieces.push(imagePiece);
@@ -62,6 +63,7 @@ data = {
     a: 0,
     imageList: [],
     boxes:[],
+    useMe:{id:'use-me',class:'use-me'}
 }
 
 
@@ -92,8 +94,10 @@ Vue.component('piece',{
      },},
      props:['pieceInfo'],
      template: `
+      <div v-bind:class = pieceInfo.outerClass>
       <img v-bind:src = pieceInfo.src v-bind:id = pieceInfo.id
       v-bind:class = pieceInfo.class  @dragstart="drag($event)">
+      </div>
      `
 })
 
@@ -106,12 +110,6 @@ Vue.component('box', {
       ev.preventDefault();
       var data = byId(ev.dataTransfer.getData('imgId'))
       byId(id).appendChild(data)
-      /*
-      data.style.marginTop = ev.offsetY + 'px';
-      data.style.marginLeft = ev.offsetX + 'px';
-      data.style.marginRight = ev.offsetX + 'px';
-      data.style.marginBottom = ev.offsetY + 'px';
-      */
     },
   },
   props:['boxInfo'],
