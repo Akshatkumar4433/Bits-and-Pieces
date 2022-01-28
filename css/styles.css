@@ -7,10 +7,11 @@
   gap:1px;
 }
 
+
 .box {
   border:1px solid red;
-  width:25%;
   height: 50px;
+  width:70px;
 
 }
 .container {
@@ -19,19 +20,17 @@
 }
 
 
-
-
 .container-pieces {
   border:1px solid red;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   gap:5px;
-  height: 70vh;
+  height: 100vh;
   width: 200px;
 }
 .img {
   border: 1px solid red;
-  height: 10.1111%;
+  height:50px;
   width: 50px;
 }
