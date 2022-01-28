@@ -10,13 +10,23 @@
   </head>
   <body>
     <div id = 'app'>
-      <div class = 'playBox' @drop = 'drop($event)' @dragover = 'allowDrop($event)'>
-       <piece
-        v-for = 'image in imageList'
-        v-bind:key = 'image.key'
-        v-bind:piece-Info = 'image'
-       ></piece>
+      <div class = 'container'>
+      <div class = 'container-pieces'>
+      <piece
+       v-for = 'image in imageList'
+       v-bind:key = 'image.key'
+       v-bind:piece-Info = 'image'
+      ></piece>
+    </div>
+      <div class = 'playBox' >
+        <box
+         v-for = 'box in boxes'
+         v-bind:key = 'box.key'
+         v-bind:box-info = 'box'
+        ></box>
    </div>
    </div>
+   <button v-on:click = 'setup(3,3)'>9 pieces</button>
+ </div>
   </body>
 </html>
