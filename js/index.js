@@ -56,6 +56,22 @@ function setup(splitsX,splitsY) {
     this.imageList = shuffleArray(ImageManager(splitsX,splitsY))
     this.boxes = BoxManager(splitsX,splitsY);
 
+
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData('imgId', ev.target.id);
+}
+
+function allowDrop(ev){
+  ev.preventDefault();
+}
+
+
+function drop(ev,id) {
+  ev.preventDefault();
+  var data = byId(ev.dataTransfer.getData('imgId'))
+  byId(id).appendChild(data)
 }
 
 function drag(ev) {

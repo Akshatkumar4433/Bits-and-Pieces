@@ -18,7 +18,7 @@
        v-bind:piece-Info = 'image'
       ></piece>
     </div>
-      <div class = 'playBox' >
+      <div class = 'playBox'  id = 'playBox'>
         <box
          v-for = 'box in boxes'
          v-bind:key = 'box.key'
@@ -27,10 +27,6 @@
    </div>
     <button v-on:click = 'setup(3,3)'>9 pieces</button>
    </div>
-   <h1>Use ME</h1>
-   <box
-    v-bind:box-info = 'useMe'
-   ></box>
  </div>
   </body>
 </html>
