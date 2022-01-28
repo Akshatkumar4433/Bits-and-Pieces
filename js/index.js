@@ -16,6 +16,7 @@ function ImageManager(splitsX,splitsY) {
         key++;
       }
     }
+    this.imageOrder = imagePieces.map(e => e.id);
     return imagePieces;
 }
 
@@ -36,7 +37,6 @@ function BoxManager(splitsX,splitsY) {
       }
     }
     return boxes;
-
 }
 
 
@@ -52,12 +52,7 @@ function shuffleArray(array) {
 }
 
 
-function setup(splitsX,splitsY) {
-    this.imageList = shuffleArray(ImageManager(splitsX,splitsY))
-    this.boxes = BoxManager(splitsX,splitsY);
 
-
-}
 
 function drag(ev) {
   ev.dataTransfer.setData('imgId', ev.target.id);
@@ -93,12 +88,34 @@ function byId(id) {
   return document.getElementById(id);
 }
 
+function setup(splitsX,splitsY) {
+    this.imageList = shuffleArray(ImageManager(splitsX,splitsY))
+    this.boxes = BoxManager(splitsX,splitsY);
+}
 
+function checkforCompletion() {
+      for(let i = 0; i<imageOrder.length; i++) {
+        let box = this.boxes[i];
+         let imgId = byId(box.id).childNodes[0].id
+         if (imageOrder[i] != imgId) { this.completionMsg(false); return}
+      }
+      this.completionMsg(true)
+}
+
+function completionMsg(boolean) {
+   if (boolean) {
+     this.msg = 'You did cool'
+   }
+   else {
+     this.msg = 'focus'
+   }
+}
 
 data = {
-    a: 0,
+    imageOrder:[],
     imageList: [],
     boxes:[],
+    msg:'focus',
 }
 
 
@@ -109,6 +126,8 @@ methods = {
    drag:drag,
    allowDrop:allowDrop,
    drop:drop,
+   checkforCompletion:checkforCompletion,
+   completionMsg:completionMsg,
 }
 
 
@@ -125,7 +144,9 @@ Vue.component('piece',{
 Vue.component('box', {
   props:['boxInfo'],
   template: `
-   <div v-bind:id = boxInfo.id v-bind:class = boxInfo.class @drop = boxInfo.drop($event,boxInfo.id) @dragover = boxInfo.allowDrop($event)></div>
+   <div v-bind:id = boxInfo.id v-bind:class = boxInfo.class
+   @drop = boxInfo.drop($event,boxInfo.id)
+   @dragover = boxInfo.allowDrop($event)></div>
   `
 })
 
